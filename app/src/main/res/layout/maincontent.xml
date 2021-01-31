@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainContentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/showInfoLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/scdream"
+            android:text="내 활동"
+            android:textColor="@color/black"
+            android:padding="5dp"
+            android:textSize="22dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    활동 정보를 보여주는 레이아웃-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/showInfoLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBarLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="오늘은 이만큼 활동했어요"
+            android:gravity="center"
+            android:fontFamily="@font/scdream"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:layout_marginTop="8dp"/>
+
+
+
+        <ImageView
+            android:id="@+id/mainContent_shoeImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/running_shoe"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mainContent_runningText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/scdream"
+            android:text="달린 거리"
+            android:textColor="#7A7A7A"
+            android:textSize="16dp"
+            app:layout_constraintLeft_toRightOf="@id/mainContent_shoeImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mainContent_showKm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/scdream"
+            android:text="0.0km"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            app:layout_constraintLeft_toRightOf="@id/mainContent_shoeImage"
+            app:layout_constraintTop_toBottomOf="@id/mainContent_runningText" />
+
+        <ImageView
+            android:id="@+id/mainContent_TimerImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/timer"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mainContent_shoeImage" />
+
+        <TextView
+            android:id="@+id/mainContent_TimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/scdream"
+            android:text="활동 시간"
+            android:textColor="#7A7A7A"
+            android:textSize="16dp"
+            app:layout_constraintLeft_toRightOf="@id/mainContent_TimerImage"
+            app:layout_constraintTop_toBottomOf="@id/mainContent_showKm" />
+
+        <TextView
+            android:id="@+id/mainContent_showTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/scdream"
+            android:text="00:00"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            app:layout_constraintLeft_toRightOf="@id/mainContent_TimerImage"
+            app:layout_constraintTop_toBottomOf="@id/mainContent_TimeText" />
+
+        <ImageView
+            android:id="@+id/mainContent_CalImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/fire"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mainContent_TimerImage" />
+
+        <TextView
+            android:id="@+id/mainContent_CalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/scdream"
+            android:text="칼로리"
+            android:textColor="#7A7A7A"
+            android:textSize="16dp"
+            app:layout_constraintLeft_toRightOf="@id/mainContent_CalImage"
+            app:layout_constraintTop_toBottomOf="@id/mainContent_showTime" />
+
+        <TextView
+            android:id="@+id/mainContent_showCal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/scdream"
+            android:text="00:00"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            app:layout_constraintLeft_toRightOf="@id/mainContent_CalImage"
+            app:layout_constraintTop_toBottomOf="@id/mainContent_CalText" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/startRunningButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/startrunning"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="달리기"
+        android:textColor="#ffffff"
+        android:textSize="22dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
