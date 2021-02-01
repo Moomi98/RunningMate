@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
@@ -23,23 +24,20 @@ class StartRunning : AppCompatActivity() {
     var mBound: Boolean = false
     private var fragmentFlag : Boolean = false
     val mConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) { // 서비스 통신 시도 결과 저장
             val binder = service as RunningService.MyBinder
             mService = binder.getService()
             mBound = true
 
-            if(!fragmentFlag){
+            if(!fragmentFlag){ // settingFragment 를 시도했었는지 확인
                 settingFragment()
                 fragmentFlag = true
             }
-            Log.d("mapCycle", "onServiceConnected")
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
             mBound = false
-            Log.d("mapCycle", "onServiceDisconnected")
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,16 +47,29 @@ class StartRunning : AppCompatActivity() {
         startRunning(0, 0, 0.0)
     }
 
-
-    fun startRunning(min : Int, sec : Int, distance : Double){
+    fun startRunning(min : Int, sec : Int, distance : Double){ // 백그라운드 서비스를 시작
         runningServiceIntent = Intent(this, RunningService::class.java)
         runningServiceIntent.putExtra("min", min)
         runningServiceIntent.putExtra("sec", sec)
         runningServiceIntent.putExtra("distance", distance)
-        bindService(runningServiceIntent, mConnection, Context.BIND_AUTO_CREATE)
+        startForegroundService()
+        bindService(runningServiceIntent, mConnection, BIND_AUTO_CREATE)
     }
 
-    private fun settingFragment(){
+    private fun startForegroundService() {
+        runningServiceIntent.run {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) startForegroundService(this)
+            else startService(this)
+        }
+    }
+
+    private fun stopForegroundService() {
+       runningServiceIntent.run {
+            stopService(this)
+        }
+    }
+
+    private fun settingFragment(){ // tabLayout 에 보여질 fragment 설정
         binding.runningTabLayout.addTab(binding.runningTabLayout.newTab().setIcon(R.drawable.runningicon))
         binding.runningTabLayout.addTab(binding.runningTabLayout.newTab().setIcon(R.drawable.mapicon))
 
