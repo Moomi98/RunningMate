@@ -92,6 +92,11 @@ class StartRunning : AppCompatActivity() {
         })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopForegroundService()
+    }
+
    inner class FragmentPagerAdapter(fragmentManager: FragmentManager, private val tabCount : Int) : FragmentStatePagerAdapter(fragmentManager){
         override fun getCount(): Int {
             return tabCount

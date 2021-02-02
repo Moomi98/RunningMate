@@ -1,8 +1,6 @@
 package org.techtown.runningmate
 
 import android.content.Context
-import android.content.ServiceConnection
-import android.graphics.Color
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -11,7 +9,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
@@ -19,11 +16,7 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.UiSettings
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import org.techtown.runningmate.databinding.RunningMapviewBinding
-import kotlin.coroutines.CoroutineContext
 
 class MapView(
     private val startRunning: StartRunning
@@ -141,10 +134,8 @@ class MapView(
     }
 
     override fun onResume() {
-
         super.onResume()
         mapView.onResume()
-//        startRunning.mService.setDistance(distance)
     }
 
     override fun onPause() {
@@ -160,9 +151,9 @@ class MapView(
 
     override fun onStop() {
         Log.d("mapCycle", "onStop")
-
+//        startRunning.mService.setNaverMapListener()
         super.onStop()
-        mapView.onStop()
+
     }
 
     override fun onLowMemory() {

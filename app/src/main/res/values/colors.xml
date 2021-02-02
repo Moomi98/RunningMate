@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mainColor">#4197FF</color>
     <color name="background">#ECECEC</color>
+    <color name="lightBlue">#005EFF</color>
+    <color name="lightRed">#FF2D2D</color>
+    <color name="lightSkyBlue">#41BDFF</color>
 </resources>

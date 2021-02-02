@@ -27,10 +27,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".FinishDialog" android:theme="@android:style/Theme.Holo.Dialog"/>
 
         <service
             android:name=".RunningService"
             android:enabled="true"
+            android:foregroundServiceType="location"
             android:exported="false" />
 
 

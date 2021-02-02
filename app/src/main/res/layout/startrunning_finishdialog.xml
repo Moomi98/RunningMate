@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/startrunning_frame"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/finishDialog_questionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/splitLineHorizon"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/scdream"
+            android:gravity="center"
+            android:text="운동을 완료하시겠습니까?"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:padding="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/splitLineHorizon"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/finishDialog_questionText"
+        app:layout_constraintBottom_toTopOf="@id/finishDialog_YesNoTextFrame"
+        android:background="#717171"/>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/finishDialog_YesNoTextFrame"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/splitLineHorizon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+
+        <TextView
+            android:id="@+id/finishDialog_noText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/splitLineVertical"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="아니요"
+            android:fontFamily="@font/scdream"
+            android:textSize="20dp"
+            android:textColor="@color/lightRed"
+            android:background="@drawable/startrunning_frame"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/splitLineVertical"
+            android:layout_width="2dp"
+            android:layout_height="40dp"
+            android:background="#717171"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/finishDialog_YesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예, 완료합니다."
+
+            app:layout_constraintLeft_toRightOf="@id/splitLineVertical"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/scdream"
+            android:textColor="@color/lightBlue"
+            android:textSize="20dp"
+            android:padding="5dp"
+            android:background="@drawable/finishdialog_yesframe"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/finishDialog_noTextFrame"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/finishDialog_YesTextFrame">-->
+<!--        -->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

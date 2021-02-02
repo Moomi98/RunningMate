@@ -23,7 +23,6 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
     var flag: Boolean = true
     private val timerThread = CoroutineScope(Dispatchers.Main) // 타이머 코루틴을 위한 객체
     private val mapThread = CoroutineScope(Dispatchers.Main)
-    private val serviceThread = CoroutineScope(Dispatchers.Main)
     private val timerIntent = Intent() // timer 정보를 전달하기 위한 intent 객체
     private val distanceIntent = Intent() // 거리 정보를 전달하기 위한 intent 객체
     private val pathList = mutableListOf<LatLng>() // 경로 저장 리스트
@@ -42,9 +41,11 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
         createNotificationChannel()
         val notificationIntent = Intent(this, StartRunning::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
-        val notification = NotificationCompat.Builder (this, CHANNEL_ID).setContentTitle("Foreground Service").setContentText("")
-        .setSmallIcon(R.drawable.appicon).setContentIntent(pendingIntent)
-            .build()
+        val notification =
+            NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle("Foreground Service")
+                .setContentText("")
+                .setSmallIcon(R.drawable.appicon).setContentIntent(pendingIntent)
+                .build()
         startForeground(1, notification)
 
         return START_NOT_STICKY
@@ -58,10 +59,6 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
         registerIntent() // intent action 설정
         launchTimer()
 
-        if (!flag) {
-            launchMap()
-            flag = true
-        }
         return binder
     }
 
@@ -101,16 +98,20 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
     }
 
     private fun launchMap() = mapThread.launch {
+
         naverMap.addOnLocationChangeListener {
-            if (pathList.size < 2) { // 최소 2개 이상의 좌표를 가지고 있어야 하므로 최초에는 2개를 저장
-                pathList.add(LatLng(it.latitude, it.longitude))
-                pathList.add(LatLng(it.latitude, it.longitude))
-            } else
-                pathList.add(LatLng(it.latitude, it.longitude))
-            drawPath() // 경로 그리기
-            val changedistance = calDistance() // 이동 거리 구하기
-            setDistance(changedistance)
-            Log.d("mapCycle", distance.toString())
+            if (flag) {
+                if (pathList.size < 2) { // 최소 2개 이상의 좌표를 가지고 있어야 하므로 최초에는 2개를 저장
+                    pathList.add(LatLng(it.latitude, it.longitude))
+                    pathList.add(LatLng(it.latitude, it.longitude))
+                } else
+                    pathList.add(LatLng(it.latitude, it.longitude))
+                drawPath() // 경로 그리기
+                val changedistance = calDistance() // 이동 거리 구하기
+                setDistance(changedistance)
+                Log.d("mapCycle", distance.toString())
+            }
+
         }
 
     }
@@ -126,14 +127,18 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
     }
 
 
-    fun setNaverMapListener(naverMap: NaverMap, path: PathOverlay) {
+    fun setNaverMapListener(naverMap: NaverMap, path: PathOverlay) { // 서비스에서 실행할 naverMap 설정
+
         this.naverMap = naverMap
         this.path = path
-        Log.d("mapCycle", "setNaverMapListener")
+
+
+
         launchMap()
+
     }
 
-    private fun drawPath() {
+    private fun drawPath() { // 이동 경로 그리기
         Log.d("listSize", pathList.size.toString())
         path.coords = pathList
         path.color = Color.parseColor("#b5b2ff")
@@ -146,7 +151,7 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
         return pathList[pathList.size - 1].distanceTo(pathList[pathList.size - 2])
     }
 
-    private fun createNotificationChannel() {
+    private fun createNotificationChannel() { // notificationChannel 설정
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
                 CHANNEL_ID,
