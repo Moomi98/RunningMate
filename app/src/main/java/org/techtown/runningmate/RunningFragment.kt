@@ -1,5 +1,6 @@
 package org.techtown.runningmate
 
+import android.app.Dialog
 import android.content.*
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +17,7 @@ import kotlin.math.roundToInt
 
 class RunningFragment(
     private val startRunning: StartRunning
-) : Fragment() {
+) : Fragment(), FinishDialog.AddOnDialogReturnListener {
     private lateinit var binding: RunningfragmentBinding
     private lateinit var dialogBinding : StartrunningFinishdialogBinding
     private var timerThread = CoroutineScope(Dispatchers.Main)
@@ -24,6 +25,8 @@ class RunningFragment(
     private var min: Int = 0
     private var sec: Int = 0
     private var distance: Double = 0.0
+    private var kcal : Double = 0.0
+    private var pace : String = ""
     private val serviceReceiver: ServiceReceiver = ServiceReceiver(this)
     private val intentFilter = IntentFilter()
 
@@ -34,7 +37,6 @@ class RunningFragment(
     ): View {
         binding = RunningfragmentBinding.inflate(inflater, container, false)
         dialogBinding = StartrunningFinishdialogBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -66,11 +68,31 @@ class RunningFragment(
 
         }
 
-        binding.finishButton.setOnClickListener {
-            val intent = Intent(startRunning, FinishDialog::class.java)
-            startActivity(intent)
+        binding.finishButton.setOnClickListener { // 종료 버튼
+            startRunning.unbindService(startRunning.mConnection) // 서비스 unbind
+            startRunning.stopService(startRunning.runningServiceIntent)
+            Log.d("dialog", "finishButton")
+            val dialog = FinishDialog(startRunning)
+            dialog.startDialog()
+            dialog.setOnDialogReturnListener(this)
         }
     }
+
+    override fun onNoClicked() { // finishDialog 에서 '아니오' 를 눌렀을 경우 서비스 재실행
+        startRunning() // 재실행
+    }
+
+    override fun onYesClicked() { // finishDialog 에서 '예' 를 눌렀을 경우 결과창 출력
+        val intent = Intent(startRunning, RunningResult::class.java)
+        intent.putExtra("min", min)
+        intent.putExtra("sec", sec)
+        intent.putExtra("distance", distance)
+        intent.putExtra("kcal", kcal)
+        intent.putExtra("pace", pace)
+        startRunning.startActivity(intent)
+    }
+
+
 
     fun setTimer(time: String?) { // UI에 타이머 업데이트
         min = time?.slice(0..1)?.toInt() ?: 0
@@ -97,13 +119,13 @@ class RunningFragment(
             }
             else
                 totalPaceSec
-            val pace = "${changeTotalMin}:${changeTotalSec}"
+            pace = "${changeTotalMin}:${changeTotalSec}"
             binding.RunningShowFace.text = pace
         }
     }
 
     fun setCal(){
-        val kcal = distance * 62.5
+        kcal = distance * 62.5
         binding.RunningShowCal.text = kcal.toString()
     }
 

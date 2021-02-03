@@ -92,6 +92,10 @@ class StartRunning : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        return
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         stopForegroundService()

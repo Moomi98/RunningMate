@@ -109,7 +109,6 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
                 drawPath() // 경로 그리기
                 val changedistance = calDistance() // 이동 거리 구하기
                 setDistance(changedistance)
-                Log.d("mapCycle", distance.toString())
             }
 
         }
@@ -128,18 +127,12 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
 
 
     fun setNaverMapListener(naverMap: NaverMap, path: PathOverlay) { // 서비스에서 실행할 naverMap 설정
-
         this.naverMap = naverMap
         this.path = path
-
-
-
         launchMap()
-
     }
 
     private fun drawPath() { // 이동 경로 그리기
-        Log.d("listSize", pathList.size.toString())
         path.coords = pathList
         path.color = Color.parseColor("#b5b2ff")
         if (pathList.size > 2) {
@@ -172,5 +165,10 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
         Log.d("mapCycle", "onUnbind")
         flag = false
         return false
+    }
+
+    override fun onDestroy() {
+        timerThread.cancel()
+        mapThread.cancel()
     }
 }

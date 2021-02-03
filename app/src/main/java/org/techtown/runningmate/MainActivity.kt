@@ -17,7 +17,9 @@ class MainActivity : AppCompatActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
 
-       mainBinding.mainViewPager.adapter = PageAdapter(this)
+        MyRealm.initRealm(this) // local DB 사용을 위한 Realm 세팅
+
+       mainBinding.mainViewPager.adapter = PageAdapter(this) // viewPager 어댑터 설정
 
         val tabIconList = arrayListOf(R.drawable.runningicon, R.drawable.competitionicon, R.drawable.profileicon)
 

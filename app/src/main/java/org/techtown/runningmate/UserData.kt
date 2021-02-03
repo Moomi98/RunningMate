@@ -11,15 +11,15 @@ open class UserData : RealmObject(){
 
 open class RunningList : RealmObject() {
     var date: String = ""
-    var runningDay : RunningOfDay = RunningOfDay()
+    var runningDayList : RealmList<RunningOfDay> = RealmList()
 }
 
 open class RunningOfDay : RealmObject() {
-    var year: Int = 0 // 년
-    var month: Int = 0 // 월
-    var day: Int = 0 // 일
-    var runningTime : String = "" // 하루 달린 시간
-    var distance : Int = 0 // 하루 달린 거리
-    var pace : String = "" // 하루 동안 페이스
-    var kcal : Double = 0.0 // 하루 동안 소모한 칼로리
+
+    var min : Int = 0
+    var sec : Int = 0
+    var distance : Double = 0.0 // 활동 당 거리
+    var pace : String = "" // 활동 당 페이스
+    var kcal : Double = 0.0 // 활동 당 소모한 칼로리
+    var memo : String = ""
 }

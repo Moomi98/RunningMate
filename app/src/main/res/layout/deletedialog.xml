@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/scdream"
             android:gravity="center"
-            android:text="운동을 완료하시겠습니까?"
+            android:text="이 활동 정보를 삭제하시겠습니까?"
             android:textColor="@color/black"
             android:textSize="17dp"
             android:padding="10dp"
@@ -79,7 +79,7 @@
             android:id="@+id/finishDialog_YesText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="예, 완료합니다."
+            android:text="예, 삭제합니다."
 
             app:layout_constraintLeft_toRightOf="@id/splitLineVertical"
             app:layout_constraintRight_toRightOf="parent"
@@ -92,16 +92,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/finishDialog_noTextFrame"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/finishDialog_YesTextFrame">-->
-<!--        -->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/finishDialog_noTextFrame"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/finishDialog_YesTextFrame">-->
+    <!--        -->
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 

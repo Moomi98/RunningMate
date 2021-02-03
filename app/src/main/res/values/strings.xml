@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RunningMate</string>
+    <string name="runningResult_hint">이번 활동은 어떠셨나요?</string>
 </resources>
