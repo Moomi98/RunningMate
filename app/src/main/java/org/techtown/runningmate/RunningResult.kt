@@ -46,7 +46,7 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
         binding.mainContentShowPace.text = pace
     }
 
-    private fun setButton(){
+    private fun setButton(){ // 저장, 삭제 버튼 설정
         binding.saveButton.setOnClickListener {
             saveRunningData()
             Snackbar.make(binding.root, "활동이 저장 되었습니다", Snackbar.LENGTH_SHORT).show()

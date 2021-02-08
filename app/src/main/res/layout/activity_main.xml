@@ -16,7 +16,11 @@
     </androidx.viewpager2.widget.ViewPager2>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/main_tabView"
+        app:tabIndicatorHeight="0dp"
         android:layout_width="match_parent"
+        app:tabIndicatorFullWidth="false"
+        app:tabGravity="fill"
+        android:background="@drawable/main_runningtab"
         android:layout_height="wrap_content">
 
     </com.google.android.material.tabs.TabLayout>

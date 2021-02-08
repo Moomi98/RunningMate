@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterInformation">
+
+
+    <TextView
+        android:id="@+id/basicInfoText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/scdream"
+        android:gravity="center"
+        android:layout_marginBottom="30dp"
+        android:text="기본 정보 입력"
+        android:textColor="#000000"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toTopOf="@id/NickNameLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--별명 레이아웃-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/NickNameLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/BirthLayout"
+        app:layout_constraintTop_toBottomOf="@id/basicInfoText">
+
+
+        <TextView
+            android:id="@+id/nickNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="별명"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toStartOf="@id/writeNickName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/writeNickName"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/writeinfolayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/nickNameText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/BirthLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@id/genderLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/NickNameLayout">
+
+
+        <TextView
+            android:id="@+id/birthText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="생일"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toStartOf="@id/writeBirth"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/writeBirth"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/writeinfolayout"
+            android:hint="YYYY-MM-DD"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/birthText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/genderLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/BirthLayout">
+
+
+        <TextView
+            android:id="@+id/genderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:text="성별"
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:singleSelection="true"
+
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/manChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="남성"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_marginEnd="30dp"
+                android:fontFamily="@font/scdream"
+                app:layout_constraintEnd_toStartOf="@id/womanChip"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/womanChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:text="여성"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:fontFamily="@font/scdream"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/manChip"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="등록"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:fontFamily="@font/scdream"
+        android:padding="10dp"
+        android:textSize="30dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/startrunning"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

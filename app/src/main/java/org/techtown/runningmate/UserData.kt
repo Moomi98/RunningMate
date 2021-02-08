@@ -3,6 +3,10 @@ package org.techtown.runningmate
 import io.realm.RealmList
 import io.realm.RealmObject
 
+open class LoginInfo : RealmObject(){
+    var userId : String = ""
+    var logined : Boolean = false
+}
 open class UserData : RealmObject(){
     var name : String = ""
     var totalDistance : Double = 0.0

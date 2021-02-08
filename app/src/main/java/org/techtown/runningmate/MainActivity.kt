@@ -14,22 +14,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainBinding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
 
-        MyRealm.initRealm(this) // local DB 사용을 위한 Realm 세팅
-
        mainBinding.mainViewPager.adapter = PageAdapter(this) // viewPager 어댑터 설정
 
-        val tabIconList = arrayListOf(R.drawable.runningicon, R.drawable.competitionicon, R.drawable.profileicon)
+        val tabIconList = arrayListOf(R.drawable.running_shoe, R.drawable.competitionicon, R.drawable.profileicon)
 
         TabLayoutMediator(mainBinding.mainTabView, mainBinding.mainViewPager){ tab, position ->
             tab.setIcon(tabIconList[position])
         }.attach()
-
         mainBinding.mainViewPager.isUserInputEnabled = false
 
     }
+
 }
 
 class PageAdapter(

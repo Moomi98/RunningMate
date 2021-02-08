@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#DADADA"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".StartRunning">
 
@@ -35,6 +35,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/running_TabLayout"
         android:layout_width="match_parent"
+        android:background="@drawable/main_runningtab"
         android:layout_height="wrap_content">
 
 
