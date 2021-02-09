@@ -1,7 +1,15 @@
 package org.techtown.runningmate
 
+import android.os.Parcel
+import android.os.Parcelable
+import com.naver.maps.geometry.LatLng
 import io.realm.RealmList
 import io.realm.RealmObject
+import java.io.Serializable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+class LatLngSet(var pathList : MutableList<LatLng>) : Parcelable
 
 open class LoginInfo : RealmObject(){
     var userId : String = ""

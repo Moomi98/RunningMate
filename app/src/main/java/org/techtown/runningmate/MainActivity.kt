@@ -40,7 +40,7 @@ class PageAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> MainContent()
-            1 -> CompetitionView()
+            1 -> RankingView()
             else -> ProfileVIew()
         }
     }

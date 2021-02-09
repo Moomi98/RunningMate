@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.techtown.runningmate.databinding.MaincontentBinding
 import java.util.*
+import kotlin.math.round
 
 class MainContent : Fragment() {
     private var _binding : MaincontentBinding? = null
@@ -70,6 +71,10 @@ class MainContent : Fragment() {
                     todayDistance += i.distance
                     todayMin += i.min
                     todaySec += i.sec
+                    if(todaySec > 59){
+                        todayMin += 1
+                        todaySec = 0
+                    }
                     todayKcal += i.kcal
                 }
             }
@@ -87,6 +92,7 @@ class MainContent : Fragment() {
         }
         else
             todaySec.toString()
+
         val showDistance = "$todayDistance km"
         val showKcal = "$todayKcal kcal"
         val showTime = "$changeMin:$changeSec"

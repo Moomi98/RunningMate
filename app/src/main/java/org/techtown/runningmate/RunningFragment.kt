@@ -2,16 +2,20 @@ package org.techtown.runningmate
 
 import android.app.Dialog
 import android.content.*
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.naver.maps.geometry.LatLng
 import kotlinx.coroutines.*
 import org.techtown.runningmate.databinding.RunningfragmentBinding
 import org.techtown.runningmate.databinding.StartrunningFinishdialogBinding
+import java.time.LocalDateTime
 import kotlin.math.round
 import kotlin.math.roundToInt
 
@@ -27,6 +31,9 @@ class RunningFragment(
     private var distance: Double = 0.0
     private var kcal : Double = 0.0
     private var pace : String = ""
+    private var startTime : String = ""
+    private var endTime : String = ""
+    private var pathList = mutableListOf<LatLng>()
     private val serviceReceiver: ServiceReceiver = ServiceReceiver(this)
     private val intentFilter = IntentFilter()
 
@@ -40,10 +47,13 @@ class RunningFragment(
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         registerMyReceiver() // broadCastReceiver 등록
         startRunning() // service 실행
         setButton() // 각 버튼별 listener 설정
+        setStartTime()
+
     }
 
     private fun setButton(){ // 버튼 설정
@@ -71,24 +81,43 @@ class RunningFragment(
         binding.finishButton.setOnClickListener { // 종료 버튼
             startRunning.unbindService(startRunning.mConnection) // 서비스 unbind
             startRunning.stopService(startRunning.runningServiceIntent)
-            Log.d("dialog", "finishButton")
             val dialog = FinishDialog(startRunning)
             dialog.startDialog()
             dialog.setOnDialogReturnListener(this)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setStartTime(){
+        val time: LocalDateTime = LocalDateTime.now()
+        startTime = time.toString().slice(11..18)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setEndTime(){
+        val time: LocalDateTime = LocalDateTime.now()
+        endTime = time.toString().slice(11..18)
+    }
+
     override fun onNoClicked() { // finishDialog 에서 '아니오' 를 눌렀을 경우 서비스 재실행
         startRunning() // 재실행
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onYesClicked() { // finishDialog 에서 '예' 를 눌렀을 경우 결과창 출력
+        setEndTime() // 종료 시간 확인
+
         val intent = Intent(startRunning, RunningResult::class.java)
         intent.putExtra("min", min)
         intent.putExtra("sec", sec)
         intent.putExtra("distance", distance)
         intent.putExtra("kcal", kcal)
         intent.putExtra("pace", pace)
+        intent.putExtra("startTime", startTime)
+        intent.putExtra("endTime", endTime)
+
+        val list = LatLngSet(pathList)
+        intent.putExtra("pathList", list)
         startRunning.startActivity(intent)
     }
 
@@ -129,6 +158,10 @@ class RunningFragment(
         binding.RunningShowCal.text = kcal.toString()
     }
 
+    fun setPathList(pathList : MutableList<LatLng>){
+        this.pathList = pathList
+    }
+
     private fun startRunning() { // 서비스 실행
         startRunning.startRunning(min, sec, distance)
     }
@@ -149,6 +182,7 @@ class RunningFragment(
     private fun registerMyReceiver(){ // broadCastReceiver 등록
         intentFilter.addAction("TimerService")
         intentFilter.addAction("DistanceService")
+        intentFilter.addAction("PathListService")
         startRunning.registerReceiver(serviceReceiver, intentFilter)
     }
 
@@ -158,6 +192,7 @@ class ServiceReceiver(private val runningFragment: RunningFragment) : BroadcastR
     override fun onReceive(context: Context?, intent: Intent?) { // 시간, 거리 정보를 업데이트 마다 수신받기
 
         if (intent != null) {
+            Log.d("pathList", intent.action.toString())
             when (intent.action) { // 액션 종류에 따라 분류
                 "TimerService" -> { // 타이머 액션 업데이터
                     val time = intent.getStringExtra("time")
@@ -169,6 +204,12 @@ class ServiceReceiver(private val runningFragment: RunningFragment) : BroadcastR
                     runningFragment.setDistance(distance)
                     runningFragment.setPace()
                     runningFragment.setCal()
+                }
+
+                "PathListService" ->{ // 경로 정보 세팅
+                    val pathList = intent.getParcelableExtra<LatLngSet>("pathList")
+                    runningFragment.setPathList(pathList!!.pathList)
+                    Log.d("pathList", pathList.pathList.toString())
                 }
             }
         }

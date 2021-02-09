@@ -1,10 +1,12 @@
 package org.techtown.runningmate
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.get
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -14,6 +16,10 @@ import org.techtown.runningmate.databinding.ActivityRegisterInformationBinding
 class RegisterInformation : AppCompatActivity() {
     private lateinit var email: String
     private lateinit var binding: ActivityRegisterInformationBinding
+    private var year : Int = 0
+    private var month : Int = 0
+    private var day : Int = 0
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterInformationBinding.inflate(layoutInflater)
@@ -23,22 +29,29 @@ class RegisterInformation : AppCompatActivity() {
         setButton()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setButton() { // 버튼 설정
         binding.registerButton.setOnClickListener {
             registerInfo()
+        }
+
+        binding.writeBirth.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
+            this.year = year
+            this.month = monthOfYear + 1
+            this.day = dayOfMonth
         }
     }
 
     private fun registerInfo() { // 별명, 생년월일, 성별 정보 저장
         val nickName : String = binding.writeNickName.text.toString()
-        val birth = binding.writeBirth.text.toString()
+        val birth = "$year/$month/$day"
         val gender = if(binding.manChip.isChecked){
             "남성"
         }
         else
             "여성"
 
-        if(nickName.isEmpty() || birth.isEmpty()){
+        if(nickName.isEmpty()){
             Toast.makeText(this, "정보를 정확히 입력해주세요", Toast.LENGTH_SHORT).show()
         }
         else {

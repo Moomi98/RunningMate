@@ -82,25 +82,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
+            android:layout_marginTop="88dp"
+            android:gravity="center_vertical"
             android:text="생일"
             android:textColor="#000000"
-            app:layout_constraintEnd_toStartOf="@id/writeBirth"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <DatePicker
             android:id="@+id/writeBirth"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
             android:layout_marginEnd="30dp"
-            android:background="@drawable/writeinfolayout"
-            android:hint="YYYY-MM-DD"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/birthText"
+
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

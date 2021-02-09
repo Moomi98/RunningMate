@@ -4,8 +4,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.naver.maps.geometry.LatLng
 import io.realm.RealmResults
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.techtown.runningmate.databinding.RunningresultBinding
 import java.util.*
 
@@ -19,6 +28,10 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
     private var year : Int = 0
     private var month : Int = 0
     private var day : Int = 0
+    private var startTime : String = ""
+    private var endTime : String = ""
+    private lateinit var pathList : MutableList<LatLng>
+    private var saveCoroutine = CoroutineScope(Dispatchers.Main)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = RunningresultBinding.inflate(layoutInflater)
@@ -34,6 +47,10 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
         distance = intent.getDoubleExtra("distance", 0.0)
         kcal = intent.getDoubleExtra("kcal", 0.0)
         pace = intent.getStringExtra("pace")!!
+        startTime = intent.getStringExtra("startTime")!!
+        endTime = intent.getStringExtra("endTime")!!
+       val list = intent.getParcelableExtra<LatLngSet>("pathList")
+        pathList = list!!.pathList
     }
 
     private fun setResultInfo(){ // 가져온 정보로 UI 업데이트
@@ -104,6 +121,30 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
                     this.date = "${year}/${month}/${day}"
                 }
             }
+        }
+
+        saveInfoOnServer()
+    }
+
+    private fun saveInfoOnServer(){ // 서버에 정보 저장
+        val query : LoginInfo = MyRealm.realm.where(LoginInfo::class.java).findFirst()
+        val user = hashMapOf("distance" to distance, "min" to min, "sec" to sec, "pace" to pace, "kcal" to kcal, "memo" to binding.memoEditText.text.toString(), "path" to pathList)
+        val initDistance = hashMapOf("totalDistance" to 0.0)
+        val totalDistance = 0.0
+        val date = "${year}/${month}/${day}"
+        val time = "$startTime ~ $endTime"
+        saveCoroutine.launch {
+            val db = Firebase.firestore
+
+            db.collection("userInfo").document(query.userId).collection(date).document(time).set(user)
+                .addOnSuccessListener {
+                    Toast.makeText(this@RunningResult, "서버에 저장되었습니다", Toast.LENGTH_SHORT).show()
+                    Log.d("pathList", pathList.toString())
+                }.addOnCanceledListener {
+                    Toast.makeText(this@RunningResult, "서버 저장에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                }
+
+            db.collection("userInfo").document(query.userId).collection(year.toString()).document(month.toString()).update("totalDistance", distance)
         }
     }
 

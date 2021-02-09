@@ -25,6 +25,7 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
     private val mapThread = CoroutineScope(Dispatchers.Main)
     private val timerIntent = Intent() // timer 정보를 전달하기 위한 intent 객체
     private val distanceIntent = Intent() // 거리 정보를 전달하기 위한 intent 객체
+    private val pathListIntent = Intent() // 경로 저장 리스트를 전달하기 위한 intent 객체
     private val pathList = mutableListOf<LatLng>() // 경로 저장 리스트
     private lateinit var path: PathOverlay
     private lateinit var naverMap: NaverMap // 네이버 맵 객체
@@ -65,12 +66,13 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
     private fun registerIntent() {
         timerIntent.action = "TimerService"
         distanceIntent.action = "DistanceService"
+        pathListIntent.action = "PathListService"
     }
 
     private fun setDistance(distance: Double) { // m 단위 거리를 km로 전환하여 저장
         this.distance += distance
         val changeDistance = round(this.distance * 0.1) / 100
-        getDistance(changeDistance)
+        sendDistance(changeDistance)
     }
 
     private fun launchTimer() = timerThread.launch {
@@ -93,7 +95,7 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
                 min.toString()
 
             val time = "$changeMin:$changeSec"
-            getTimer(time)
+            sendTimer(time)
         }
     }
 
@@ -115,14 +117,20 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
 
     }
 
-    private fun getTimer(time: String) { // Timer 정보 전달
+    private fun sendTimer(time: String) { // Timer 정보 전달
         timerIntent.putExtra("time", time)
         sendBroadcast(timerIntent)
     }
 
-    private fun getDistance(distance: Double) { // 거리 정보 전달
+    private fun sendDistance(distance: Double) { // 거리 정보 전달
         distanceIntent.putExtra("distance", distance)
         sendBroadcast(distanceIntent)
+    }
+
+    private fun sendPathList(){
+        val list = LatLngSet(pathList)
+        pathListIntent.putExtra("pathList", list)
+        sendBroadcast(pathListIntent)
     }
 
 
@@ -162,6 +170,8 @@ class RunningService : Service() { // 백그라운드에서도 달리기 정보�
     override fun onUnbind(intent: Intent?): Boolean {
         timerThread.cancel()
         mapThread.cancel()
+        sendPathList() // 중지 , 종료 시 경로 리스트 전달
+
         Log.d("mapCycle", "onUnbind")
         flag = false
         return false
