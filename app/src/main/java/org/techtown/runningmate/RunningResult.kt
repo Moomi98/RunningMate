@@ -16,21 +16,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.techtown.runningmate.databinding.RunningresultBinding
+import org.w3c.dom.Document
 import java.util.*
 
 class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListener {
-    private lateinit var binding : RunningresultBinding
+    private lateinit var binding: RunningresultBinding
     private var min: Int = 0
     private var sec: Int = 0
     private var distance: Double = 0.0
-    private var kcal : Double = 0.0
-    private var pace : String = ""
-    private var year : Int = 0
-    private var month : Int = 0
-    private var day : Int = 0
-    private var startTime : String = ""
-    private var endTime : String = ""
-    private lateinit var pathList : MutableList<LatLng>
+    private var kcal: Double = 0.0
+    private var pace: String = ""
+    private var year: Int = 0
+    private var month: Int = 0
+    private var day: Int = 0
+    private var startTime: String = ""
+    private var endTime: String = ""
+    private lateinit var pathList: MutableList<LatLng>
     private var saveCoroutine = CoroutineScope(Dispatchers.Main)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,7 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
         setButton()
     }
 
-    private fun getRunningInfo(){ // StartRunning 으로 부터 결과 정보를 가져온다.
+    private fun getRunningInfo() { // StartRunning 으로 부터 결과 정보를 가져온다.
         min = intent.getIntExtra("min", 0)
         sec = intent.getIntExtra("sec", 0)
         distance = intent.getDoubleExtra("distance", 0.0)
@@ -49,11 +50,11 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
         pace = intent.getStringExtra("pace")!!
         startTime = intent.getStringExtra("startTime")!!
         endTime = intent.getStringExtra("endTime")!!
-       val list = intent.getParcelableExtra<LatLngSet>("pathList")
+        val list = intent.getParcelableExtra<LatLngSet>("pathList")
         pathList = list!!.pathList
     }
 
-    private fun setResultInfo(){ // 가져온 정보로 UI 업데이트
+    private fun setResultInfo() { // 가져온 정보로 UI 업데이트
         val showDistance = "$distance km"
         val showTime = "$min:$sec"
         val showKcal = "$kcal kcal"
@@ -63,7 +64,7 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
         binding.mainContentShowPace.text = pace
     }
 
-    private fun setButton(){ // 저장, 삭제 버튼 설정
+    private fun setButton() { // 저장, 삭제 버튼 설정
         binding.saveButton.setOnClickListener {
             saveRunningData()
             Snackbar.make(binding.root, "활동이 저장 되었습니다", Snackbar.LENGTH_SHORT).show()
@@ -79,20 +80,21 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
         }
     }
 
-    private fun getCurrentTime(){
+    private fun getCurrentTime() {
         val cal = Calendar.getInstance() // 오늘 날짜 설정
         year = cal.get(Calendar.YEAR)
         month = cal.get(Calendar.MONTH) + 1
         day = cal.get(Calendar.DATE)
     }
 
-    private fun saveRunningData(){
+    private fun saveRunningData() {
         getCurrentTime() // 저장 시점의 날짜 정보 얻기
-        val query: RunningList? = MyRealm.realm.where(RunningList::class.java) // 저장 시점의 날짜에 다른 정보가 있는지 확인
-            .equalTo("date", "${year}/${month}/${day}").findFirst()
-        Log.d("saveInfo",  "${year}/${month}/${day}")
+        val query: RunningList? =
+            MyRealm.realm.where(RunningList::class.java) // 저장 시점의 날짜에 다른 정보가 있는지 확인
+                .equalTo("date", "${year}/${month}/${day}").findFirst()
+        Log.d("saveInfo", "${year}/${month}/${day}")
 
-        if(query != null) { // 해당 날짜에 이미 저장된 정보가 있었다면 추가 정보를 바로 저장
+        if (query != null) { // 해당 날짜에 이미 저장된 정보가 있었다면 추가 정보를 바로 저장
             MyRealm.realm.executeTransaction {
                 with(it.createObject(RunningOfDay::class.java)) {
                     this.distance = this@RunningResult.distance
@@ -104,11 +106,9 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
                     query.runningDayList.add(this)
                 }
             }
-        }
-
-        else{ // 없다면 해당 날짜를 가질 수 있는 클래스를 만들어 저장
+        } else { // 없다면 해당 날짜를 가질 수 있는 클래스를 만들어 저장
             MyRealm.realm.executeTransaction {
-                with(it.createObject(RunningList::class.java)){
+                with(it.createObject(RunningList::class.java)) {
                     val newRunningOfDay = RunningOfDay()
                     newRunningOfDay.distance = this@RunningResult.distance
                     newRunningOfDay.min = this@RunningResult.min
@@ -126,27 +126,100 @@ class RunningResult : AppCompatActivity(), DeleteDialog.AddOnDeleteDialogListene
         saveInfoOnServer()
     }
 
-    private fun saveInfoOnServer(){ // 서버에 정보 저장
-        val query : LoginInfo = MyRealm.realm.where(LoginInfo::class.java).findFirst()
-        val user = hashMapOf("distance" to distance, "min" to min, "sec" to sec, "pace" to pace, "kcal" to kcal, "memo" to binding.memoEditText.text.toString(), "path" to pathList)
+    private fun saveInfoOnServer() { // 서버에 정보 저장
+        val query: LoginInfo = MyRealm.realm.where(LoginInfo::class.java).findFirst()
+        val user = hashMapOf(
+            "distance" to distance,
+            "min" to min,
+            "sec" to sec,
+            "pace" to pace,
+            "kcal" to kcal,
+            "memo" to binding.memoEditText.text.toString(),
+            "path" to pathList
+        )
         val initDistance = hashMapOf("totalDistance" to 0.0)
-        val totalDistance = 0.0
+        var totalDistance = 0.0
         val date = "${year}/${month}/${day}"
         val time = "$startTime ~ $endTime"
+        val db = Firebase.firestore
+        lateinit var findTotalDistance: Task<DocumentSnapshot>
         saveCoroutine.launch {
-            val db = Firebase.firestore
 
-            db.collection("userInfo").document(query.userId).collection(date).document(time).set(user)
-                .addOnSuccessListener {
-                    Toast.makeText(this@RunningResult, "서버에 저장되었습니다", Toast.LENGTH_SHORT).show()
-                    Log.d("pathList", pathList.toString())
-                }.addOnCanceledListener {
-                    Toast.makeText(this@RunningResult, "서버 저장에 실패하였습니다", Toast.LENGTH_SHORT).show()
-                }
+            val saveDayInfo =
+                db.collection("userInfo").document(query.userId).collection(date).document(time)
+            val saveMonthInfo =
+                db.collection("userInfo").document(query.userId).collection(year.toString())
+                    .document(month.toString())
 
-            db.collection("userInfo").document(query.userId).collection(year.toString()).document(month.toString()).update("totalDistance", distance)
+            findTotalDistance =
+                db.collection("userInfo").document(query.userId).collection(year.toString())
+                    .document(month.toString()).get().addOnCompleteListener {
+
+                        db.runTransaction {
+                            totalDistance = it.get(saveMonthInfo)["totalDistance"] as Double
+
+
+                            initDistance["totalDistance"] = totalDistance + distance
+
+                            if (!findTotalDistance.result.exists()) {
+                                it.set(saveMonthInfo, initDistance)
+                                Log.d("checkFire", "not exist")
+                            }
+                            it.set(saveDayInfo, user)
+                            it.update(saveMonthInfo, initDistance as Map<String, Any>)
+
+
+                        }
+
+                        Toast.makeText(this@RunningResult, "서버에 저장되었습니다", Toast.LENGTH_SHORT).show()
+
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            this@RunningResult,
+                            "서버에서 정보를 가져오는데 실패했습니다",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d("checkFire", it.stackTraceToString())
+                    }
+
+//            db.runTransaction {
+//                totalDistance = it.get(saveMonthInfo)["totalDistance"] as Double
+//
+//
+//                initDistance["totalDistance"] = totalDistance + distance
+//
+//                if (!findTotalDistance.result.exists()) {
+//                    it.set(saveMonthInfo, initDistance)
+//                    Log.d("checkFire", "not exist")
+//                }
+//                it.set(saveDayInfo, user)
+//                it.update(saveMonthInfo, initDistance as Map<String, Any>)
+//
+//
+//            }.addOnSuccessListener {
+//                Toast.makeText(this@RunningResult, "서버에 저장되었습니다", Toast.LENGTH_SHORT).show()
+//            }.addOnFailureListener {
+//                Toast.makeText(this@RunningResult, "서버 저장에 실패하였습니다", Toast.LENGTH_SHORT)
+//                    .show()
+//                Log.d("checkFire", it.stackTraceToString())
+//            }
+
+
         }
+
+
+//
+//            db.collection("userInfo").document(query.userId).collection(date).document(time).set(user)
+//                .addOnSuccessListener {
+//                    Toast.makeText(this@RunningResult, "서버에 저장되었습니다", Toast.LENGTH_SHORT).show()
+//                }.addOnCanceledListener {
+//                    Toast.makeText(this@RunningResult, "서버 저장에 실패하였습니다", Toast.LENGTH_SHORT).show()
+//                }
+//
+//            Log.d("checkFire", (totalDistance + distance).toString())
+//            db.collection("userInfo").document(query.userId).collection(year.toString()).document(month.toString()).update("totalDistance", totalDistance + distance)
     }
+
 
     override fun onYesClicked() {
         val intent = Intent(this, MainActivity::class.java)
