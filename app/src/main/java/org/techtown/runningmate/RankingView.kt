@@ -24,6 +24,20 @@ class RankingView : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setButton()
+        setRanking()
+    }
+
+    private fun setButton(){
+        binding.generateUser.setOnClickListener {
+            val create = CreateSampleUser()
+            create.createUser()
+        }
+    }
+
+    private fun setRanking(){
+        val sortRanking = SortRanking()
+        sortRanking.findAllUserDistanceInfo()
     }
 
     override fun onDestroyView() {
@@ -48,7 +62,7 @@ class RankingRecyclerView(private val inflater : LayoutInflater, private val bin
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun getItemCount(): Int {
