@@ -30,14 +30,20 @@ class CreateSampleUser {
         getDate()
         createCoroutine.launch {
             val db = Firebase.firestore
-            for(i in 1 until 31){
+            for(i in 0 until 20){
+                val path = db.collection("userInfo").document("testEmail$i@gmail.com")
                 val inputData = hashMapOf("totalDistance" to randomDistance())
-                db.collection("userInfo").document("testEmail$i@gmail.com").collection(year.toString()).document(month.toString()).set(inputData).addOnCompleteListener {
+                val inputInfo = hashMapOf("NickName" to "$i 번째 사람", "birth" to "$i-$i-$i", "gender" to "남성")
+
+                path.collection(year.toString()).document(month.toString()).set(inputData).addOnCompleteListener {
                     Log.d("createUser", inputData.toString() + "is Complete")
+                    path.set(inputInfo)
                 }.addOnFailureListener {
                     Log.d("createUser", inputData.toString() + "is Fail")
                 }
+
             }
         }
     }
+
 }

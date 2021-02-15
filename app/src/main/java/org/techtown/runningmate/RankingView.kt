@@ -25,7 +25,6 @@ class RankingView : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setButton()
-        setRanking()
     }
 
     private fun setButton(){
@@ -33,11 +32,6 @@ class RankingView : Fragment() {
             val create = CreateSampleUser()
             create.createUser()
         }
-    }
-
-    private fun setRanking(){
-        val sortRanking = SortRanking()
-        sortRanking.findAllUserDistanceInfo()
     }
 
     override fun onDestroyView() {
