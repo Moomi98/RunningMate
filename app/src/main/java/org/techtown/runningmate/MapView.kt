@@ -46,6 +46,7 @@ class MapView(
         mapView.getMapAsync(this@MapView)
         locationSource =
             FusedLocationSource(this@MapView, LOCATION_PERMISSION_REQUEST_CODE)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +73,7 @@ class MapView(
 
         if(startRunning.mService.flag)
             startRunning.mService.setNaverMapListener(naverMap, path)
+
 //        naverMap.addOnLocationChangeListener { // 좌표의 변화가 생겼을 때 발생하는 리스너
 //
 //            if (startRunning.mService.flag) {

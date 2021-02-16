@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 class PageAdapter(
-    fragment: FragmentActivity,
+    private val fragment: FragmentActivity,
 ) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return 3
@@ -40,7 +40,7 @@ class PageAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> MainContent()
-            1 -> RankingView()
+            1 -> RankingView(fragment)
             else -> ProfileVIew()
         }
     }
